@@ -1,0 +1,37 @@
+import org.gradle.internal.os.OperatingSystem
+
+pluginManagement {
+    plugins {
+        id 'edu.wpi.first.GradleRIO' version '2023.4.3'
+        id 'com.palantir.java-format' version '2.28.0'
+        id 'com.diffplug.spotless' version '6.12.1'
+        id 'net.ltgt.errorprone' version '3.0.1'
+        id 'com.github.johnrengelman.shadow' version '7.1.2'
+        id 'com.palantir.java-format' version '2.28.0'
+    }
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        String frcYear = '2023'
+        File frcHome
+        if (OperatingSystem.current().isWindows()) {
+            String publicFolder = System.getenv('PUBLIC')
+            if (publicFolder == null) {
+                publicFolder = "C:\\Users\\Public"
+            }
+            def homeRoot = new File(publicFolder, 'wpilib')
+            frcHome = new File(homeRoot, frcYear)
+        } else {
+            def userFolder = System.getProperty('user.home')
+            def homeRoot = new File(userFolder, 'wpilib')
+            frcHome = new File(homeRoot, '2023')
+        }
+        def frcHomeMaven = new File(frcHome, 'maven')
+        maven {
+            name 'frcHome'
+            url frcHomeMaven
+        }
+    }
+}
+
+rootProject.name = '2023CompetitionRobot'
